@@ -10,6 +10,9 @@ __pycache__/
 
 #csv files
 *.csv
+#txt files
+*.txt
+
 # C extensions
 *.so
 
