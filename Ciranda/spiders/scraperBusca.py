@@ -7,7 +7,7 @@ def extrairPropriedade(propriedade):
 class CirandaSpider(scrapy.Spider):
 	with open("c:\\url.txt", "rt") as f:
 		start_urls = [url.strip() for url in f.readlines()]
-	name = "cirandaBusca"
+	name = "cirandaBuscaDesc"
 	def parse(self,response):
 		for item in response.xpath('//figcaption//a'):
 			url = item.xpath('@href').extract()
@@ -16,8 +16,11 @@ class CirandaSpider(scrapy.Spider):
 
 	def parseDadosLivro(self,response):
 		item = { "imageLink" : response.css('.slide-image .imageWrapper a ::attr(href)').extract()}
+		desc = {"descricao" : response.css('.description div ::text').extract()}
+		item.update({desc})
+		print("descricao: " + desc)
 		ficha = response.css('.ficha-tecnica li')
 		propriedades = [extrairPropriedade(propriedade) for propriedade in ficha]
-		item.update({ "url": response.url})
+		item.update({"url": response.url})
 		item.update(dict(propriedades))
 		yield item
